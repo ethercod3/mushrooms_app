@@ -29,6 +29,12 @@ async def mushroom_update(mushroom: Mushroom, response: Response) -> Response:
     else:
         mushrooms.remove(find(mushrooms, mushroom.id))
         mushrooms.append(mushroom)
+
+        for basket in baskets:
+            for basket_mushroom in basket.mushrooms:
+                if basket_mushroom.id == mushroom.id:
+                    basket_mushroom.__dict__.update(mushroom.model_dump())
+
         response.status_code = status.HTTP_201_CREATED
         return mushroom
 
